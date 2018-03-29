@@ -330,38 +330,48 @@
       var request = new Request(input, init);
       var fetcher = getFetcher();
 
-      fetcher.onload = function() {
-        var options = {
-          status: fetcher.status,
-          statusText: fetcher.statusText,
-          headers: parseHeaders(fetcher.getAllResponseHeaders() || '')
-        };
-        options.url = 'responseURL' in fetcher ? fetcher.responseURL : options.headers.get('X-Request-URL');
-        var body = 'response' in fetcher ? fetcher.response : fetcher.responseText;
-        resolve(new Response(body, options))
-      };
+      // fetcher.onload = function() {
+      //   var options = {
+      //     status: fetcher.status,
+      //     statusText: fetcher.statusText,
+      //     headers: parseHeaders(fetcher.getAllResponseHeaders() || '')
+      //   };
+      //   options.url = 'responseURL' in fetcher ? fetcher.responseURL : options.headers.get('X-Request-URL');
+      //   var body = 'response' in fetcher ? fetcher.response : fetcher.responseText;
+      //   resolve(new Response(body, options))
+      // };
 
-      fetcher.onerror = function() {
-        reject(new TypeError('Network request failed'))
-      };
-
-      fetcher.ontimeout = function() {
-        reject(new TypeError('Network request failed'))
-      };
+      // fetcher.onerror = function() {
+      //   reject(new TypeError('Network request failed'))
+      // };
+      //
+      // fetcher.ontimeout = function() {
+      //   reject(new TypeError('Network request failed'))
+      // };
 
       fetcher.open(request.method, request.url, true);
 
-      if (request.credentials === 'include') {
-        fetcher.withCredentials = true
-      } else if (request.credentials === 'omit') {
-        fetcher.withCredentials = false
-      }
+      // if (request.credentials === 'include') {
+      //   fetcher.withCredentials = true
+      // } else if (request.credentials === 'omit') {
+      //   fetcher.withCredentials = false
+      // }
 
       request.headers.forEach(function(value, name) {
         fetcher.setRequestHeader(name, value)
       });
 
-      fetcher.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+      var result = fetcher.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+
+      var options = {
+        status: fetcher.status,
+        statusText: fetcher.statusText,
+        headers: parseHeaders(fetcher.getAllResponseHeaders() || '')
+      };
+      options.url = 'responseURL' in fetcher ? fetcher.responseURL : options.headers.get('X-Request-URL');
+        // var body = 'response' in fetcher ? fetcher.response : fetcher.responseText;
+      resolve(new Response(result, options))
+
     })
   };
   self.fetch.polyfill = true
