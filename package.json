@@ -1,6 +1,6 @@
 {
-  "name": "whatwg-fetch",
-  "description": "A window.fetch polyfill.",
+  "name": "appsscript-fetch",
+  "description": "A Typescript fetch to AppsScript polyfill.",
   "version": "2.0.3",
   "main": "fetch.js",
   "repository": "github/fetch",
